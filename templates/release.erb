@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Release name
+if [ -f /etc/fedora-release ]; then
+    R=$(cat /etc/fedora-release)
+elif [ -f /etc/redhat-release ]; then
+    R=$(cat /etc/redhat-release | sed 's/ (.*)//g')
+else
+    R="Unknown distribution"
+fi
+
+# Kernel version - instead of #V since RHEL6 appended arch
+V=$(basename $(uname -r) .$(uname -m))
+
+# Format string to use
+STRING="<%= @format_string %>"
+
+# Check for linux_logo first
+[ -x /usr/bin/linux_logo ] || exit 1
+
+RETVAL=0
+
+/usr/bin/linux_logo -g -F "${STRING}" > /etc/issue
+RETVAL="$(($RETVAL+$?))"
+/usr/bin/linux_logo -g -F "${STRING}" -a > /etc/issue.net
+RETVAL="$(($RETVAL+$?))"
+/usr/bin/linux_logo -g -F "\n${STRING}" -a > /etc/motd
+RETVAL="$(($RETVAL+$?))"
+
+exit $RETVAL

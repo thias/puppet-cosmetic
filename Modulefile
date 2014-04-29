@@ -1,5 +1,5 @@
 name 'thias-cosmetic'
-version '0.1.0'
+version '0.1.1'
 source 'git://github.com/thias/puppet-cosmetic'
 author 'Matthias Saou'
 license 'Apache 2.0'

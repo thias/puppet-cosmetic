@@ -12,27 +12,54 @@ class cosmetic::release (
 
   if $ensure == 'absent' {
 
-    # Cleanly remove with chkconfig *before* removing the init script
-    exec { '/sbin/chkconfig --del release; /bin/rm -f /etc/init.d/release':
-      onlyif => '/usr/bin/test -f /etc/init.d/release',
+    # Cleanly disable to remove symlinks *before* removing the init script
+    if $::osfamily == 'RedHat' and $::operatingsystemmajrelease >= 7 {
+      exec { 'systemctl disable release.service; rm -f /lib/systemd/system/release.service':
+        onlyif => 'test -f /lib/systemd/system/release.service',
+        path   => [ '/bin', '/usr/bin' ],
+      }
+    } else {
+      exec { 'chkconfig --del release; rm -f /etc/init.d/release':
+        onlyif => 'test -f /etc/init.d/release',
+        path   => [ '/sbin', '/bin', '/usr/bin' ],
+      }
     }
 
   } else {
 
     package { 'linux_logo': ensure => installed }
 
-    # The 'release' service to create nice issue/motd files
-    file { '/etc/init.d/release':
-      content => template('cosmetic/release.init.erb'),
+    file { '/usr/local/bin/release':
+      content => template('cosmetic/release.erb'),
       owner   => 'root',
       group   => 'root',
       mode    => '0755',
-      notify  => Service['release'],
       require => Package['linux_logo'],
     }
+
+    if $::osfamily == 'RedHat' and $::operatingsystemmajrelease >= 7 {
+      file { '/lib/systemd/system/release.service':
+        content => template('cosmetic/release.systemd.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        notify  => Service['release'],
+        require => File['/usr/local/bin/release'],
+      }
+    } else {
+      # The 'release' service to create nice issue/motd files
+      file { '/etc/init.d/release':
+        content => template('cosmetic/release.init.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        notify  => Service['release'],
+        require => File['/usr/local/bin/release'],
+      }
+    }
+
     service { 'release':
-      enable    => true,
-      hasstatus => true,
+      enable => true,
     }
 
   }

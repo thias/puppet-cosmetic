@@ -14,18 +14,22 @@ welcome.
 
 Change bash prompt to include some color, different for root (red vs. green) :
 
-    class { '::cosmetic::bash':
-      # Green user with blue directory
-      ps1_user => '[\[\033[01;32m\]\u\[\033[00m\]@\h\[\033[01;34m\] \W\[\033[00m\]]\$ ',
-      # Red user with blue directory
-      ps1_root => '[\[\033[01;31m\]\u\[\033[00m\]@\h\[\033[01;34m\] \W\[\033[00m\]]\$ ',
-    }
+```puppet
+class { '::cosmetic::bash':
+  # Green user with blue directory
+  ps1_user => '[\[\033[01;32m\]\u\[\033[00m\]@\h\[\033[01;34m\] \W\[\033[00m\]]\$ ',
+  # Red user with blue directory
+  ps1_root => '[\[\033[01;31m\]\u\[\033[00m\]@\h\[\033[01;34m\] \W\[\033[00m\]]\$ ',
+}
+```
 
 The exact same, from hieradata :
 
-    ---
-    classes:
-      - '::cosmetic::bash'
-    cosmetic::bash::ps1: '[\[\033[01;32m\]\u\[\033[00m\]@\h \[\033[01;34m\]\W\[\033[00m\]]\$ '
-    cosmetic::bash::ps1_root: '[\[\033[01;31m\]\u\[\033[00m\]@\h \[\033[01;34m\]\W\[\033[00m\]]\$ '
+```yaml
+---
+classes:
+  - '::cosmetic::bash'
+cosmetic::bash::ps1: '[\[\033[01;32m\]\u\[\033[00m\]@\h \[\033[01;34m\]\W\[\033[00m\]]\$ '
+cosmetic::bash::ps1_root: '[\[\033[01;31m\]\u\[\033[00m\]@\h \[\033[01;34m\]\W\[\033[00m\]]\$ '
+```
 
