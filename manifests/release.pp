@@ -1,12 +1,7 @@
-# Class: cosmetic::release
-#
-# Create useful and nice looking motd and issue files using linux_logo.
-#
-# Sample Usage :
-#     include '::cosmetic::release'
-#
+# We have some long lines that can't be avoided
+# lint:ignore:80chars
 class cosmetic::release (
-  $format_string = '$R - Linux $V\\n#N #M #X #T cpu#S with #R RAM\\n-> #H <-\n',
+  $format_string = "\$R - Linux \$V\\\\n#N #M #X #T cpu#S with #R RAM\\\\n-> #H <-\\n",
   $ensure        = 'present',
 ) {
 
@@ -65,4 +60,5 @@ class cosmetic::release (
   }
 
 }
+# lint:endignore
 
