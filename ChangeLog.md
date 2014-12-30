@@ -1,3 +1,5 @@
+* Add execs for first time release changes.
+
 #### 2014-12-16 - 1.0.0
 * Fix release.systemd template to have puppet enable it properly.
 * Replace Modulefile with metadata.json.

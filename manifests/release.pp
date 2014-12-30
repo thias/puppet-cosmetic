@@ -40,6 +40,9 @@ class cosmetic::release (
         mode    => '0644',
         notify  => Service['release'],
         require => File['/usr/local/bin/release'],
+      } ~>
+      exec { '/bin/systemctl start release.service':
+        refreshonly => true,
       }
     } else {
       # The 'release' service to create nice issue/motd files
@@ -50,6 +53,9 @@ class cosmetic::release (
         mode    => '0755',
         notify  => Service['release'],
         require => File['/usr/local/bin/release'],
+      } ~>
+      exec { '/etc/init.d/release start':
+        refreshonly => true,
       }
     }
 
