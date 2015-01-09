@@ -1,3 +1,4 @@
+#### 2015-01-09 - 1.0.1
 * Add execs for first time release changes.
 
 #### 2014-12-16 - 1.0.0
