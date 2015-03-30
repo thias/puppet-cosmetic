@@ -1,3 +1,5 @@
+* Update operatingsystemrelease conditionals to use versioncmp (future parser).
+
 #### 2015-01-09 - 1.0.1
 * Add execs for first time release changes.
 

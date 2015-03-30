@@ -8,7 +8,7 @@ class cosmetic::release (
   if $ensure == 'absent' {
 
     # Cleanly disable to remove symlinks *before* removing the init script
-    if $::osfamily == 'RedHat' and $::operatingsystemmajrelease >= 7 {
+    if $::osfamily == 'RedHat' and versioncmp($::operatingsystemrelease, '7') >= 0 {
       exec { 'systemctl disable release.service; rm -f /lib/systemd/system/release.service':
         onlyif => 'test -f /lib/systemd/system/release.service',
         path   => [ '/bin', '/usr/bin' ],
@@ -32,7 +32,7 @@ class cosmetic::release (
       require => Package['linux_logo'],
     }
 
-    if $::osfamily == 'RedHat' and $::operatingsystemmajrelease >= 7 {
+    if $::osfamily == 'RedHat' and versioncmp($::operatingsystemrelease, '7') >= 0 {
       file { '/lib/systemd/system/release.service':
         content => template('cosmetic/release.systemd.erb'),
         owner   => 'root',
