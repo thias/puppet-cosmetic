@@ -1,3 +1,4 @@
+#### 2015-04-28 - 1.0.2
 * Update operatingsystemrelease conditionals to use versioncmp (future parser).
 
 #### 2015-01-09 - 1.0.1
