@@ -1,3 +1,5 @@
+* Rebase vimrc for el9+.
+
 #### 2015-04-28 - 1.0.2
 * Update operatingsystemrelease conditionals to use versioncmp (future parser).
 

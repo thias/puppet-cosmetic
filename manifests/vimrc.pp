@@ -10,12 +10,19 @@ class cosmetic::vimrc (
   $ensure = undef,
 ) {
 
+  # The base file has changed quite a bit, so rebase for EL9+
+  if versioncmp($::operatingsystemmajrelease, '9') >= 0 {
+    $template = 'vimrc-el9'
+  } else {
+    $template = 'vimrc'
+  }
+
   file { '/etc/vimrc':
     ensure  => $ensure,
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => template('cosmetic/vimrc.erb'),
+    content => template("cosmetic/${template}.erb"),
   }
 
 }
