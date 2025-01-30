@@ -8,7 +8,7 @@ class cosmetic::release (
   if $ensure == 'absent' {
 
     # Cleanly disable to remove symlinks *before* removing the init script
-    if $::osfamily == 'RedHat' and versioncmp($::operatingsystemrelease, '7') >= 0 {
+    if $facts['os']['family'] == 'RedHat' and versioncmp($facts['os']['release']['major'], '7') >= 0 {
       exec { 'systemctl disable release.service; rm -f /lib/systemd/system/release.service':
         onlyif => 'test -f /lib/systemd/system/release.service',
         path   => [ '/bin', '/usr/bin' ],
@@ -32,7 +32,7 @@ class cosmetic::release (
       require => Package['linux_logo'],
     }
 
-    if $::osfamily == 'RedHat' and versioncmp($::operatingsystemrelease, '7') >= 0 {
+    if $facts['os']['family'] == 'RedHat' and versioncmp($facts['os']['release']['major'], '7') >= 0 {
       file { '/lib/systemd/system/release.service':
         content => template('cosmetic/release.systemd.erb'),
         owner   => 'root',
@@ -40,8 +40,8 @@ class cosmetic::release (
         mode    => '0644',
         notify  => Service['release'],
         require => File['/usr/local/bin/release'],
-      } ~>
-      exec { '/bin/systemctl start release.service':
+      }
+      ~> exec { '/bin/systemctl start release.service':
         refreshonly => true,
       }
     } else {
@@ -53,8 +53,8 @@ class cosmetic::release (
         mode    => '0755',
         notify  => Service['release'],
         require => File['/usr/local/bin/release'],
-      } ~>
-      exec { '/etc/init.d/release start':
+      }
+      ~> exec { '/etc/init.d/release start':
         refreshonly => true,
       }
     }

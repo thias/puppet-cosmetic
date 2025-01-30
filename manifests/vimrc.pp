@@ -11,7 +11,7 @@ class cosmetic::vimrc (
 ) {
 
   # The base file has changed quite a bit, so rebase for EL9+
-  if versioncmp($::operatingsystemmajrelease, '9') >= 0 {
+  if versioncmp($facts['os']['release']['major'], '9') >= 0 {
     $template = 'vimrc-el9'
   } else {
     $template = 'vimrc'

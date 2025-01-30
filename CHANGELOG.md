@@ -1,3 +1,5 @@
+* Remove legacy facts usage.
+
 #### 2023-09-07 - 1.0.3
 * Rebase vimrc for el9+.
 
